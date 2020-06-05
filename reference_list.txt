@@ -1,4 +1,0 @@
-0000	555-555-0000	Example notes
-0001	555-555-0001	More example notes
-0002	555-555-0002	Even more exmaple notes
-0003	555-555-0003	There is a lot of example notes.
