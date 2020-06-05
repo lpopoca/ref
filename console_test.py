@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 
-def read_entry(ref_dict, ref_num,):
-    print(ref_dict)
+def read_entry(ref_dict, ref_num):
+    print(str(ref_num))
+    print(ref_dict[ref_num])
     
 def create_ref(ref_dict, ref_num, reference_number_str, date, note):
     ref_num = {'date' : date, 'note' : note}
-    ref_dict["reference number: " + reference_number_str] = ref_num
+    ref_dict[reference_number_str] = ref_num
     return ref_dict
 
 def new_entry(reference_dictionary):
