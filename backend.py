@@ -17,7 +17,7 @@ def new_entry(reference_dictionary):
     note = input("Enter note: ")
     create_ref(reference_dictionary,reference_number, reference_number_str, date, note)
 
-def load_file(file_name,):
+def load_file(file_name):
     ref_dict = json.load(open(file_name))
     menu(ref_dict)
 
