@@ -3,16 +3,16 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import filedialog
-from RefBackend import *
+from RefController import *
+from datetime import datetime
 
-reference_dictionary = {}
-back = RefBackend(reference_dictionary)
+app_controller = RefController()
 
-class Ref(tk.Frame):
-    def __init__(self, reference_dictionary, file_name = None):
+class RefView(tk.Frame):
+    def __init__(self, app_controller, file_name = None):
+        self.controller = app_controller
         self.window = tk.Tk()
         self.window.title("Reference Entry Finder")
-        self.dictionary = reference_dictionary
         self.file_name = file_name
         self.create_widgets()
         self.create_menubar()
@@ -68,43 +68,36 @@ class Ref(tk.Frame):
         self.window.config(menu=self.menubar)
 
     def open(self):
-        jsonfile = filedialog.askopenfilename(initialdir = "/", title = "Select a File",
+        """Load in a json file that holds reference entries"""
+        model = filedialog.askopenfilename(initialdir = "/", title = "Select a File",
         filetypes = (("all files", "*.*"), ("Text files", "*.txt*")))
-        self.file_name = jsonfile
-        self.dictionary = back.load_file(jsonfile)
-
+        self.file_name = model
+        self.controller.load_file(model)
 
     def new_entry(self):
+        """Creates a new entry in the dictionary"""
         ref_num = self.reference_number_entry.get()
-        note = self.note_text.get(1.0, "end-1c")
-        RefBackend.new_entry(self, self.dictionary, ref_num, note)
-        self.note_text.insert(1.0, note)
+        ref_num_str = str(ref_num)
+        date = "06052020"
+        note = str(self.note_text.get(1.0, "end-1c"))
+        self.controller.new_entry(ref_num, ref_num_str, date, note)
+        self.note_text.delete(1.0, "end")
+        self.reference_number_entry.delete(0, "end")
 
     def find(self):
+        """Finds an entry using the reference number"""
         ref_num = self.reference_number_entry.get()
-        note = RefBackend.read_entry(self, self.dictionary, ref_num)
+        note = self.controller.read_entry(ref_num)
         self.note_text.delete(1.0, "end")
         self.note_text.insert(0.1, note)
 
     def save(self):
-        print("stub")
-        #back.save_file(self.dictionary)
+        """Saves the reference dictionary into a json file"""
+        app_controller.print_dictionary()
+        app_controller.save_file(self.file_name)
 
 # Create the entire GUI program
-program = Ref(reference_dictionary)
+program = RefView(app_controller)
 
 # Start the GUI event loop
 program.window.mainloop()
-
-""" empty_dict = {}
-back = RefBackend(empty_dict)
-
-def display_note(ref_num):
-    self.ref_num = ref_num
-    note = back.read_entry(back.ref_dict, ref_num)
-
-def open():
-    jsonfile = filedialog.askopenfilename(initialdir = "/", title = "Select a File",
-    filetypes = (("all files", "*.*"), ("Text files", "*.txt*")))
-    back.load_file(jsonfile) """
-
