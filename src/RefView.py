@@ -28,10 +28,10 @@ class RefView(tk.Frame):
         # - - - - - - - - - - - - - - - - - - - - -
         # Reference Number Label
         self.reference_number_label = ttk.Label(self.frame1, text="Reference Number:")
-        self.reference_number_label.grid(row=0, column=0, padx=10)
+        self.reference_number_label.grid(row=0, column=0)
         # - - - - - - - - - - - - - - - - - - - - -
         # Reference Number Entry
-        self.reference_number_entry = ttk.Entry(self.frame1, textvariable="Enter A Reference Number")
+        self.reference_number_entry = ttk.Entry(self.frame1)
         self.reference_number_entry.grid(row=0, column=1)
         # - - - - - - - - - - - - - - - - - - - - -
         # Find and New Buttons
@@ -39,9 +39,14 @@ class RefView(tk.Frame):
         self.find_button.grid(row=0, column=2, padx=2)
         self.find_button["command"]=self.find
         # - - - - - - - - - - - - - - - - - - - - -
-        self.new_button = ttk.Button(self.frame1, text="New")
+        self.new_button = ttk.Button(self.frame1, text="Enter")
         self.new_button.grid(row=0, column=3)
         self.new_button["command"]=self.new_entry
+        # - - - - - - - - - - - - - - - - - - - - -
+        # Date label
+        self.date_var = tk.StringVar()
+        self.date_label = tk.Label(self.frame1, textvariable=self.date_var)
+        self.date_label.grid(row=1, column=0)                
         # - - - - - - - - - - - - - - - - - - - - -
         # Frame2
         self.frame2 = ttk.Frame(self.window)
@@ -49,12 +54,7 @@ class RefView(tk.Frame):
         # - - - - - - - - - - - - - - - - - - - - -
         # Note text field
         self.note_text = tk.Text(self.frame2)
-        self.note_text.grid(row=1, column=0)
-        # - - - - - - - - - - - - - - - - - - - - -
-        # Date label
-        self.date_var = tk.StringVar()
-        self.date_label = tk.Label(self.frame1, textvariable=self.      date_var)
-        self.date_label.grid(row=1, column=0)        
+        self.note_text.grid(row=1, column=0)       
 
     def create_menubar(self):
         # - - - - - - - - - - - - - - - - - - - - -
@@ -66,9 +66,16 @@ class RefView(tk.Frame):
         self.menubar.add_cascade(label="File", menu=self.filemenu)
         self.filemenu.add_command(label="Open", command=self.open)
         self.filemenu.add_command(label="Save", command=self.save)
+        self.filemenu.add_command(label="Save as", command=self.save_as)
         self.filemenu.add_separator()
         self.filemenu.add_command(label="Exit", command=self.window.quit)
         # - - - - - - - - - - - - - - - - - - - - -
+        # create a pulldown menu, and add it to the menu bar
+        # - - - - - - - - - - - - - - - - - - - - -
+        self.editmenu = tk.Menu(self.menubar, tearoff=0)
+        self.menubar.add_cascade(label="Edit", menu=self.editmenu)
+        self.editmenu.add_command(label="Undo", command=self.stub)
+        self.editmenu.add_command(label="Redo",command=self.stub)
         # display the menu
         self.window.config(menu=self.menubar)
 
@@ -79,15 +86,27 @@ class RefView(tk.Frame):
         self.file_name = model
         self.controller.load_file(model)
 
+    def save_as(self):
+        """Save the current reference dictionary into a json file"""
+        model = filedialog.asksaveasfilename(initialdir = "/", title = "Select a File", filetypes=(("all files", "*.*"),("Text files", "*.txt*")))
+        self.file_name = model
+        app_controller.save_file(self.file_name)            
+
+    def save(self):
+        """Saves the reference dictionary into a json file"""
+        app_controller.print_dictionary()
+        app_controller.save_file(self.file_name)
+    
     def new_entry(self):
         """Creates a new entry in the dictionary"""
         ref_num = self.reference_number_entry.get()
         ref_num_str = str(ref_num)
-        date = dt.datetime.today()
+        date = dt.date.today()
         note = str(self.note_text.get(1.0, "end-1c"))
         self.controller.new_entry(ref_num, ref_num_str, date, note)
         self.note_text.delete(1.0, "end")
         self.reference_number_entry.delete(0, "end")
+        self.date_var.set("")
 
     def find(self):
         """Finds an entry using the reference number"""
@@ -95,13 +114,12 @@ class RefView(tk.Frame):
         date, note = self.controller.read_entry(ref_num)
         self.note_text.delete(1.0, "end")
         self.date_var.set("Last Modified: " + str(date))
-        self.note_text.insert(0.1, note)
-        self.date_label(text=date)
+        self.note_text.insert(0.1, note)        
 
-    def save(self):
-        """Saves the reference dictionary into a json file"""
-        app_controller.print_dictionary()
-        app_controller.save_file(self.file_name)
+    def stub(self):
+        """A tempory function to test a widgets functionality. It prints
+         stub to the console"""
+        print("stub")
 
 # Create the entire GUI program
 program = RefView(app_controller)
