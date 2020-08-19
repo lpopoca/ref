@@ -82,13 +82,13 @@ class RefView(tk.Frame):
     def open(self):
         """Load in a json file that holds reference entries"""
         model = filedialog.askopenfilename(initialdir = "/", title = "Select a File",
-        filetypes = (("all files", "*.*"), ("Text files", "*.txt*")))
+        filetypes = (("JSON files", "*.json*"), ("All files", "*.*")))
         self.file_name = model
         self.controller.load_file(model)
 
     def save_as(self):
         """Save the current reference dictionary into a json file"""
-        model = filedialog.asksaveasfilename(initialdir = "/", title = "Select a File", filetypes=(("all files", "*.*"),("Text files", "*.txt*")))
+        model = filedialog.asksaveasfilename(initialdir = "/", title = "Select a File", filetypes=(("JSON files", "*.json*"),("All files", "*.*")))
         self.file_name = model
         app_controller.save_file(self.file_name)            
 
