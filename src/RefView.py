@@ -4,7 +4,7 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import filedialog
 from RefController import *
-from datetime import datetime
+import datetime as dt
 
 app_controller = RefController()
 
@@ -49,7 +49,12 @@ class RefView(tk.Frame):
         # - - - - - - - - - - - - - - - - - - - - -
         # Note text field
         self.note_text = tk.Text(self.frame2)
-        self.note_text.grid(row=1, column=1)
+        self.note_text.grid(row=1, column=0)
+        # - - - - - - - - - - - - - - - - - - - - -
+        # Date label
+        self.date_var = tk.StringVar()
+        self.date_label = tk.Label(self.frame1, textvariable=self.      date_var)
+        self.date_label.grid(row=1, column=0)        
 
     def create_menubar(self):
         # - - - - - - - - - - - - - - - - - - - - -
@@ -78,7 +83,7 @@ class RefView(tk.Frame):
         """Creates a new entry in the dictionary"""
         ref_num = self.reference_number_entry.get()
         ref_num_str = str(ref_num)
-        date = "06052020"
+        date = dt.datetime.today()
         note = str(self.note_text.get(1.0, "end-1c"))
         self.controller.new_entry(ref_num, ref_num_str, date, note)
         self.note_text.delete(1.0, "end")
@@ -87,9 +92,11 @@ class RefView(tk.Frame):
     def find(self):
         """Finds an entry using the reference number"""
         ref_num = self.reference_number_entry.get()
-        note = self.controller.read_entry(ref_num)
+        date, note = self.controller.read_entry(ref_num)
         self.note_text.delete(1.0, "end")
+        self.date_var.set("Last Modified: " + str(date))
         self.note_text.insert(0.1, note)
+        self.date_label(text=date)
 
     def save(self):
         """Saves the reference dictionary into a json file"""

@@ -10,7 +10,7 @@ class RefController:
     def read_entry(self, ref_num):
         """Reads an entry in the dictionary"""
         print(self.ref_dict[ref_num].items())
-        return self.ref_dict[ref_num]["note"]
+        return self.ref_dict[ref_num]["date"], self.ref_dict[ref_num]["note"]
         
     def new_entry(self, ref_num, ref_num_str, date, note):
         """Creates a new dictionary entry"""
