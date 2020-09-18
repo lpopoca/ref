@@ -3,7 +3,7 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import filedialog
-from refcontroller import *
+from ref_controller import *
 import datetime as dt
 
 app_controller = RefController()
