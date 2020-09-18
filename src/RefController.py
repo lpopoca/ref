@@ -28,8 +28,3 @@ class RefController:
         with open(file_name, 'w') as f:
             f.write(j)
             f.close()
-            
-    def stub(self):
-        """A stub function to test a widgets functionality."""
-        pass            
-

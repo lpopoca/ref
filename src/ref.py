@@ -123,10 +123,6 @@ class RefView(tk.Frame):
         self.date_var.set("Last Modified: " + str(date))
         self.note_text.insert(0.1, note)        
 
-    def stub(self):
-        """A stub function to test a widgets functionality."""
-        pass
-
 # Create the entire GUI program
 program = RefView(app_controller)
 
