@@ -12,55 +12,62 @@ class RefView(tk.Frame):
     def __init__(self, app_controller, file_name = None):
         self.controller = app_controller
         self.window = tk.Tk()
-        self.window.title("Reference Entry Finder")
+        self.window.title("Reference Entry Finder")    
         self.file_name = file_name
         self.create_widgets()
         self.create_menubar()
 
     def create_widgets(self):
+        """Creates the widgets for the application"""
         # Create some room around all the internal frames
         self.window['padx'] = 5
         self.window['pady'] = 5
-        # - - - - - - - - - - - - - - - - - - - - -
+
         # Frame1
         self.frame1 = ttk.Frame(self.window)
-        self.frame1.grid(row=0, column=0, sticky=tk.W)              
-        # - - - - - - - - - - - - - - - - - - - - -
+        self.frame1.grid(row=0, column=0, sticky=tk.W)           
+
         # Reference Number Label
         self.reference_number_label = ttk.Label(self.frame1, text="Reference Number:")
         self.reference_number_label.grid(row=0, column=0)
-        # - - - - - - - - - - - - - - - - - - - - -
+
         # Reference Number Entry
         self.reference_number_entry = ttk.Entry(self.frame1)
         self.reference_number_entry.grid(row=0, column=1)
-        # - - - - - - - - - - - - - - - - - - - - -
+
         # Find and New Buttons
         self.find_button = ttk.Button(self.frame1, text="Find")
         self.find_button.grid(row=0, column=2, padx=2)
         self.find_button["command"]=self.find
-        # - - - - - - - - - - - - - - - - - - - - -
         self.new_button = ttk.Button(self.frame1, text="Enter")
         self.new_button.grid(row=0, column=3)
         self.new_button["command"]=self.new_entry
-        # - - - - - - - - - - - - - - - - - - - - -
+
         # Date label
         self.date_var = tk.StringVar()
         self.date_label = tk.Label(self.frame1, textvariable=self.date_var)
         self.date_label.grid(row=1, column=0)                
-        # - - - - - - - - - - - - - - - - - - - - -
+
         # Frame2
         self.frame2 = ttk.Frame(self.window)
-        self.frame2.grid(row=1, column=0, sticky=tk.W)
-        # - - - - - - - - - - - - - - - - - - - - -
+        self.frame2.grid(row=1, column=0, sticky=tk.W)       
+
+        # Note text scrollbar
+        self.scrollbar = ttk.Scrollbar(self.frame2)
+        self.scrollbar.grid(row=1, column=1, sticky=tk.N+tk.S+tk.E)        
+
         # Note text field
-        self.note_text = tk.Text(self.frame2)
-        self.note_text.grid(row=1, column=0)       
+        self.note_text = tk.Text(self.frame2, yscrollcommand=self.scrollbar.set, undo=True)
+        self.note_text.grid(row=1, column=0, sticky=tk.W)
+
+        # Configure Scroll bar so that it has a slider.
+        self.scrollbar.config(command=self.note_text.yview)           
 
     def create_menubar(self):
-        # - - - - - - - - - - - - - - - - - - - - -
+
         # create a toplevel menu
         self.menubar = tk.Menu(self.window)
-        # - - - - - - - - - - - - - - - - - - - - -
+
         # create a pulldown menu, and add it to the menu bar
         self.filemenu = tk.Menu(self.menubar, tearoff=0)
         self.menubar.add_cascade(label="File", menu=self.filemenu)
@@ -69,13 +76,13 @@ class RefView(tk.Frame):
         self.filemenu.add_command(label="Save as", command=self.save_as)
         self.filemenu.add_separator()
         self.filemenu.add_command(label="Exit", command=self.window.quit)
-        # - - - - - - - - - - - - - - - - - - - - -
+
         # create a pulldown menu, and add it to the menu bar
-        # - - - - - - - - - - - - - - - - - - - - -
         self.editmenu = tk.Menu(self.menubar, tearoff=0)
         self.menubar.add_cascade(label="Edit", menu=self.editmenu)
         self.editmenu.add_command(label="Undo", command=self.stub)
         self.editmenu.add_command(label="Redo",command=self.stub)
+        
         # display the menu
         self.window.config(menu=self.menubar)
 
@@ -117,9 +124,8 @@ class RefView(tk.Frame):
         self.note_text.insert(0.1, note)        
 
     def stub(self):
-        """A tempory function to test a widgets functionality. It prints
-         stub to the console"""
-        print("stub")
+        """A stub function to test a widgets functionality."""
+        pass
 
 # Create the entire GUI program
 program = RefView(app_controller)
