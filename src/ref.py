@@ -8,7 +8,7 @@ import datetime as dt
 
 app_controller = RefController()
 
-class RefView(tk.Frame):
+class Ref(tk.Frame):
     def __init__(self, app_controller, file_name = None):
         self.controller = app_controller
         self.window = tk.Tk()
@@ -124,7 +124,7 @@ class RefView(tk.Frame):
         self.note_text.insert(0.1, note)        
 
 # Create the entire GUI program
-program = RefView(app_controller)
+program = Ref(app_controller)
 
 # Start the GUI event loop
 program.window.mainloop()
