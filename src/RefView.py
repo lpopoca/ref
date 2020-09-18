@@ -16,6 +16,7 @@ class RefView(tk.Frame):
         self.file_name = file_name
         self.create_widgets()
         self.create_menubar()
+        self.window.resizable(False, False)
 
     def create_widgets(self):
         """Creates the widgets for the application"""
@@ -29,7 +30,7 @@ class RefView(tk.Frame):
 
         # Reference Number Label
         self.reference_number_label = ttk.Label(self.frame1, text="Reference Number:")
-        self.reference_number_label.grid(row=0, column=0)
+        self.reference_number_label.grid(row=0, column=0, sticky=tk.W)
 
         # Reference Number Entry
         self.reference_number_entry = ttk.Entry(self.frame1)
@@ -46,7 +47,7 @@ class RefView(tk.Frame):
         # Date label
         self.date_var = tk.StringVar()
         self.date_label = tk.Label(self.frame1, textvariable=self.date_var)
-        self.date_label.grid(row=1, column=0)                
+        self.date_label.grid(row=1, column=0, sticky=tk.W)                
 
         # Frame2
         self.frame2 = ttk.Frame(self.window)
@@ -54,11 +55,11 @@ class RefView(tk.Frame):
 
         # Note text scrollbar
         self.scrollbar = ttk.Scrollbar(self.frame2)
-        self.scrollbar.grid(row=1, column=1, sticky=tk.N+tk.S+tk.E)        
+        self.scrollbar.grid(row=0, column=1, sticky=tk.N+tk.S+tk.E)        
 
         # Note text field
         self.note_text = tk.Text(self.frame2, yscrollcommand=self.scrollbar.set, undo=True)
-        self.note_text.grid(row=1, column=0, sticky=tk.W)
+        self.note_text.grid(row=0, column=0)
 
         # Configure Scroll bar so that it has a slider.
         self.scrollbar.config(command=self.note_text.yview)           
@@ -88,21 +89,20 @@ class RefView(tk.Frame):
 
     def open(self):
         """Load in a json file that holds reference entries"""
-        model = filedialog.askopenfilename(initialdir = "/", title = "Select a File",
+        ref_file = filedialog.askopenfilename(initialdir = "/", title = "Select a File",
         filetypes = (("JSON files", "*.json*"), ("All files", "*.*")))
-        self.file_name = model
-        self.controller.load_file(model)
+        self.file_name = ref_file
+        self.controller.load_file(ref_file)
 
     def save_as(self):
         """Save the current reference dictionary into a json file"""
-        model = filedialog.asksaveasfilename(initialdir = "/", title = "Select a File", filetypes=(("JSON files", "*.json*"),("All files", "*.*")))
-        self.file_name = model
-        app_controller.save_file(self.file_name)            
+        ref_file = filedialog.asksaveasfilename(initialdir = "/", title = "Select a File", filetypes=(("JSON files", "*.json*"),("All files", "*.*")))
+        self.file_name = ref_file
+        self.controller.save_file(self.file_name)            
 
     def save(self):
         """Saves the reference dictionary into a json file"""
-        app_controller.print_dictionary()
-        app_controller.save_file(self.file_name)
+        self.controller.save_file(self.file_name)
     
     def new_entry(self):
         """Creates a new entry in the dictionary"""

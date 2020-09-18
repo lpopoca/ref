@@ -24,8 +24,12 @@ class RefController:
 
     def save_file(self, file_name):
         """Saves the dictionary to the json file that is currently open"""
-        j = json.dumps(self.ref_dict)
+        j = json.dumps(self.ref_dict, indent=4, sort_keys=True, default=str)
         with open(file_name, 'w') as f:
             f.write(j)
             f.close()
+            
+    def stub(self):
+        """A stub function to test a widgets functionality."""
+        pass            
 
