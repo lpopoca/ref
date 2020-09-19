@@ -34,20 +34,18 @@ class Ref(tk.Frame):
 
         # Reference Number Entry
         self.reference_number_entry = ttk.Entry(self.frame1)
-        self.reference_number_entry.grid(row=0, column=1)
+        self.reference_number_entry.grid(row=0, column=1, padx=5)
 
         # Find and New Buttons
-        self.find_button = ttk.Button(self.frame1, text="Find")
-        self.find_button.grid(row=0, column=2, padx=2)
-        self.find_button["command"]=self.find
-        self.new_button = ttk.Button(self.frame1, text="Enter")
+        self.find_button = ttk.Button(self.frame1, text="Find", command=self.find)
+        self.find_button.grid(row=0, column=2)
+        self.new_button = ttk.Button(self.frame1, text="Enter", command=self.new_entry)
         self.new_button.grid(row=0, column=3)
-        self.new_button["command"]=self.new_entry
 
         # Date label
         self.date_var = tk.StringVar()
         self.date_label = tk.Label(self.frame1, textvariable=self.date_var)
-        self.date_label.grid(row=1, column=0, sticky=tk.W)                
+        self.date_label.grid(row=0, column=4, sticky=tk.W)                
 
         # Frame2
         self.frame2 = ttk.Frame(self.window)
@@ -79,10 +77,10 @@ class Ref(tk.Frame):
         self.filemenu.add_command(label="Exit", command=self.window.quit)
 
         # create a pulldown menu, and add it to the menu bar
-        self.editmenu = tk.Menu(self.menubar, tearoff=0)
-        self.menubar.add_cascade(label="Edit", menu=self.editmenu)
-        self.editmenu.add_command(label="Undo", command=self.stub)
-        self.editmenu.add_command(label="Redo",command=self.stub)
+        #self.editmenu = tk.Menu(self.menubar, tearoff=0)
+        #self.menubar.add_cascade(label="Edit", menu=self.editmenu)
+        #self.editmenu.add_command(label="Undo", command=self.stub)
+        #self.editmenu.add_command(label="Redo",command=self.stub)
         
         # display the menu
         self.window.config(menu=self.menubar)
@@ -108,9 +106,10 @@ class Ref(tk.Frame):
         """Creates a new entry in the dictionary"""
         ref_num = self.reference_number_entry.get()
         ref_num_str = str(ref_num)
-        date = dt.date.today()
+        now = dt.datetime.now()
+        time_modified = now.strftime("%m-%d-%Y %I:%M:%S %p")
         note = str(self.note_text.get(1.0, "end-1c"))
-        self.controller.new_entry(ref_num, ref_num_str, date, note)
+        self.controller.new_entry(ref_num, ref_num_str, time_modified, note)
         self.note_text.delete(1.0, "end")
         self.reference_number_entry.delete(0, "end")
         self.date_var.set("")
