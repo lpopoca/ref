@@ -1,10 +1,10 @@
-# Ref
+# ref
 
- A reference notation application
+ Reference entry finder is A reference notation application.
 
-## Uses
+## Use Cases
 
-Some uses for Ref include:
+Some uses for Ref might include:
 
 1. Notating a voicemail message you left for someone.
 2. Notating a bug fix or ticket.
