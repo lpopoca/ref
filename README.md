@@ -1,6 +1,6 @@
 # ref
 
- Reference entry finder is A reference notation application.
+ Reference entry finder is a reference notation application.
 
 ## Use Cases
 
