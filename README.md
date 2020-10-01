@@ -1,6 +1,7 @@
-# ref
+# REF
 
- Reference entry finder is a reference notation application.
+REF is an acronym for Reference Entry Finder.
+It is a simple GUI application used for searching reference numbers and the notes attached to them.
 
 ## Use Cases
 
